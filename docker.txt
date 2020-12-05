@@ -1,0 +1,23 @@
+docker ps -a
+docker images				// list of images
+docker rmi image			// remove image
+docker rm cbd63a759dec  	// remove container
+docker history image		// image history
+
+docker run	image			// docker create" et "docker start"
+docker stop container
+
+docker run -itd ubuntu:18.04
+docker exec -it ubuntu:18.04 bash
+
+
+sudo systemctl enable ssh
+
+sudo systemctl status docker
+
+ps -elf
+kill -15 pid
+
+docker run --name gv-nginx -v /usr/share/nginx/html:/usr/share/nginx/html:ro -it --rm -p 8080:80 -d nginx
+
+

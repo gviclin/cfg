@@ -1,0 +1,48 @@
+django-admin startproject myProject
+python manage.py startapp myApp
+
+
+winpty python3 manage.py createsuperuser
+
+# crée la table SQL associée au modèle
+python3 manage.py makemigrations 
+python3 manage.py migrate 
+
+python3 manage.py dbshell
+
+python3 manage.py shell
+
+python3 manage.py collectstatic
+
+python3 manage.py runserver
+
+#nginx
+/etc/nginx
+/usr/share/nginx/html
+sudo ufw app list 
+sudo ufw allow 'Nginx HTTP'
+sudo systemctl restart nginx
+sudo systemctl stop nginx
+systemctl status nginx 
+
+#gunicorn
+/usr/lib/python3/dist-packages/gunicorn/config.py
+gunicorn myProject.wsgi:application
+gunicorn -c gunicorn.py myProject.wsgi:application --log-level=debug 
+
+#DB browser for SQL lite
+
+
+
+#linux log
+sudo sed -i 's/quiet splash/quiet splash loglevel=3/' /etc/default/grub
+sudo update-grub
+
+#deactivate sleep mode
+https://gist.github.com/bzerangue/e64c7122129b628302046fa8702dddd2
+sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
+sudo systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target
+https://www.dell.com/support/article/fr-fr/how12691/comment-d%C3%A9sactiver-la-mise-en-veille-et-configurer-les-param%C3%A8tres-d-alimentation-du-capot-pour-ubuntu-ou-red-hat-enterprise-linux-7?lang=fr
+
+# extra 
+sudo apt install ubuntu-restricted-extras
