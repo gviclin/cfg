@@ -20,4 +20,7 @@ kill -15 pid
 
 docker run --name gv-nginx -v /usr/share/nginx/html:/usr/share/nginx/html:ro -it --rm -p 8080:80 -d nginx
 
+https://github.com/gviclin/cfg.git
+
+sudo docker run --init -d --name="home-assistant" -e "TZ=America/New_York" -v /home/pi/ha:/config --net=host homeassistant/raspberrypi4-homeassistant:stable
 
