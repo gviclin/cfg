@@ -5,6 +5,20 @@ docker rm cbd63a759dec  	// remove container
 docker history image		// image history
 
 docker run	image			// docker create" et "docker start"
+$ docker container run -t --rm -v $(pwd):/usr/src/app -w /usr/src/app xataz/node:6 node app.js
+
+-t : fournit un terminal au docker ;
+-i : permet d'écrire dans le conteneur (couplé à -t) ;
+-d : exécute le conteneur en arrière-plan ;
+-v : permet de monter un répertoire local sur le conteneur ;
+-p : permet de binder un port sur le conteneur vers un port sur le host ;
+-e : permet l'ajout d'une variable d'environnement ;
+--name : donne un nom au conteneur ;
+--rm : détruit le conteneur une fois terminé ;
+-w : choisit le répertoire courant (dans le conteneur) ;
+--link : permet de faire un lien entre deux conteneurs.
+
+
 docker stop container
 
 docker run -itd ubuntu:18.04
