@@ -1,0 +1,121 @@
+$ sudo useradd -rs /bin/false influxdb
+
+sudo mkdir ~/influxdb
+
+#docker run --rm influxdb influxd config | sudo tee
+#/home/pi/influxdb/influxdb.conf &gt; /dev/null
+
+docker run -p 8086:8086 \
+      -v /user/pi/influxdb:/var/lib/influxdb \
+      -v /user/pi/data:/data \
+      hypriot/rpi-influxdb
+      
+docker exec -it influxdb /usr/bin/influx
+      
+docker run -p 8086:8086 \
+      --name=influxdb_backup \
+      -v /home/pi//influxdb_save:/data \
+      hypriot/rpi-influxdb    
+      
+docker exec -it influxdb_backup /usr/bin/influx
+USE db_ha
+precision rfc3339
+
+CREATE DATABASE db1
+SHOW DATABASES
+SHOW SERIES
+SHOW MEASUREMENTS
+SHOW TAG KEYS
+SHOW FIELD KEYS
+
+
+
+  > CREATE USER root WITH PASSWORD 'somepassword' WITH ALL PRIVILEGES
+  > GRANT ALL PRIVILEGES ON db1 TO root
+  > SHOW USERS  
+
+  
+SELECT time,entity_id,state_class_str,value FROM "hPa" WHERE entity_id='lumi_lumi_weather_831f4b05_pressure' AND time < '2021-11-13T14:19:44.50Z'
+
+SELECT time,entity_id,state_class_str,value FROM "°C" WHERE entity_id='lumi_lumi_weather_831f4b05_temperature' AND time > now() - 24h;
+
+SELECT time,entity_id,state,value FROM "state" WHERE entity_id='lumi_lumi_sensor_magnet_aq2_81e3a102_on_off' AND time > now() - 24h;
+
+
+
+SELECT time,device_class_str,domain,entity_id,friendly_name,friendly_name_str,icon_str,instance,source,state_class_str,unit_of_measurement_str,value INTO  FROM temperature
+
+
+SELECT time,device_class_str,domain,entity_id,friendly_name,friendly_name_str,icon_str,instance,source,state_class_str,unit_of_measurement_str,value  INTO tmpSave FROM temperature GROUP BY *
+SELECT time,device_class_str,friendly_name,friendly_name_str,icon_str,state_class_str,unit_of_measurement_str,value  INTO tmpSave FROM temperature GROUP BY *
+
+/* backup */
+DROP MEASUREMENT temperature_save
+SELECT * INTO temperature_save FROM temperature GROUP BY *
+
+SELECT device_class_str,friendly_name_str,state_class_str,unit_of_measurement_str,value INTO temperature_save FROM temperature GROUP BY *
+SELECT * INTO temperature_save2 FROM temperature GROUP BY *
+
+
+SELECT device_class_str,friendly_name_str,state_class_str,unit_of_measurement_str,value INTO gv2 FROM "°C" WHERE entity_id='lumi_lumi_weather_831f4b05_temperature' GROUP BY *
+SELECT device_class_str,friendly_name_str,icon_str,state_class_str,unit_of_measurement_str,value  INTO gv1 FROM gv2 GROUP BY *
+
+DELETE FROM gv1 WHERE entity_id='' AND time < '2021-11-12T17:00:00.00Z'
+
+# pressure
+DROP MEASUREMENT pressure_save
+SELECT * INTO pressure_save FROM pressure GROUP BY *
+
+# humidity
+DROP MEASUREMENT humidity_save
+SELECT * INTO humidity_save FROM humidity GROUP BY *
+
+SELECT * INTO humidity_save FROM "%" WHERE entity_id='lumi_lumi_weather_831f4b05_humidity' GROUP BY *
+
+DROP MEASUREMENT tmp1
+DROP SERIES FROM tmp1
+DELETE FROM tmp1
+
+DELETE FROM "temperature" WHERE entity_id='kb2000_battery_temperature'
+
+DELETE FROM "weather.maison"
+DELETE FROM "h2o_quality" WHERE "randtag" = '3'
+
+SELECT time,entity_id,state_class_str,value FROM "pressure"
+SELECT time,entity_id,state_class_str,value FROM "temperature" 
+SELECT time,entity_id,state,value FROM "humidity" 
+
+SELECT * INTO temperature_save FROM temperature_save_2 GROUP BY *
+
+
+
+SHOW FIELD KEYS ON db_ha
+
+
+
+influxd backup -portable /share/influxdb.backup
+Récupérer l’export dans le /share de HA (via l’addon samba)
+Poser ce backup dans un endroit accessible (monté) par ton nouveau influxDB
+Importer les données dans ton nouveau CT influxdb :
+influxd restore -portable /chemin/vers/influxdb.backup
+
+
+
+# grafana
+admin/admin
+
+# clone github repository
+git clone https://github.com/heziegl/rpi-grafana.git
+# run build script
+./run.sh
+-u $(id -u)
+
+docker run -d -p 3000:3000 --name=grafana -v /home/pi/grafana:/var/lib/grafana heziegl/rpi-grafana:3.1.1
+
+VERSION=3.1.1
+
+sudo docker run -t -d --name=grafana \
+                -p 3000:3000 \
+                -v $(pwd)/etc_grafana:/etc/grafana \
+                -v $(pwd)/grafana_data:/data \
+

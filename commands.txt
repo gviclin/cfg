@@ -1,8 +1,37 @@
+#install site from scratch
+python3 -m pip install django
+https://github.com/gviclin/python_repo.git
+pip3 install loguru / python3 -m pip install loguru
+pip3 install tabulate
+sudo apt-get install python-pandas
+# on rasp : sudo apt-get install libatlas-base-dev
+pip3 install pandas
+pip3 install plotly
+pip3 install pendulum==2.1.1
+pip3 install maya
+pip3 install cv2
+pip3 install matplotlib
+pip3 install seaborn
+
+#panda needs pyarrow : error while installing pyarrow :
+sudo apt-get install build-essential cmake
+git clone https://github.com/apache/arrow.git
+cd arrow/cpp
+mkdir release
+cd release
+cmake ..
+make
+make install
+
+( winpty )python3 manage.py createsuperuser
+
+
+
 django-admin startproject myProject
 python manage.py startapp myApp
 
 
-winpty python3 manage.py createsuperuser
+
 
 # crée la table SQL associée au modèle
 python3 manage.py makemigrations 

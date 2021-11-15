@@ -1,4 +1,4 @@
-docker ps -a
+  docker ps -a
 docker images				// list of images
 docker rmi image			// remove image
 docker rm cbd63a759dec  	// remove container
@@ -11,18 +11,30 @@ $ docker container run -t --rm -v $(pwd):/usr/src/app -w /usr/src/app xataz/node
 -i : permet d'écrire dans le conteneur (couplé à -t) ;
 -d : exécute le conteneur en arrière-plan ;
 -v : permet de monter un répertoire local sur le conteneur ;
--p : permet de binder un port sur le conteneur vers un port sur le host ;
+-p : permet dsudo docker run --init --name=homeassistant --user=pi --device /dev/serial0:/dev/serial0 -e TZ=Europe/Paris -v /home/pi/ha:/config --net=host --privileged ghcr.io/home-assistant/raspberrypi4-homeassistant:stable
+
+e binder un port sur le conteneur vers un port sur le host ;
 -e : permet l'ajout d'une variable d'environnement ;
 --name : donne un nom au conteneur ;
 --rm : détruit le conteneur une fois terminé ;
 -w : choisit le répertoire courant (dans le conteneur) ;
 --link : permet de faire un lien entre deux conteneurs.
 
-
+docker start -a container
 docker stop container
+
+// pratique :
+docker exec -it <container_id> /bin/bash
 
 docker run -itd ubuntu:18.04
 docker exec -it ubuntu:18.04 bash
+
+# Enable PiZiGate
+zigate:
+  gpio: true
+  port: /dev/ttyAMA0
+  # Regarding the raspberry
+  #port: /dev/serial0
 
 
 sudo systemctl enable ssh
@@ -36,5 +48,15 @@ docker run --name gv-nginx -v /usr/share/nginx/html:/usr/share/nginx/html:ro -it
 
 https://github.com/gviclin/cfg.git
 
-sudo docker run --init -d --name="home-assistant" -e "TZ=America/New_York" -v /home/pi/ha:/config --net=host homeassistant/raspberrypi4-homeassistant:stable
+
+sudo docker run --init --name=ha1 --device /dev/serial0:/dev/serial0 -e TZ=Europe/Paris -v /dev:/dev -v /home/pi/ha:/config --net=host --privileged ghcr.io/home-assistant/raspberrypi4-homeassistant:stable
+
+# delete unused image
+docker image prune
+
+docker container inspect container_id
+
+                heziegl/rpi-grafana:$VERSION
+
+
 
