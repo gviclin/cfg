@@ -1,27 +1,21 @@
 $ sudo useradd -rs /bin/false influxdb
 
-sudo mkdir ~/influxdb
 
-#docker run --rm influxdb influxd config | sudo tee
-#/home/pi/influxdb/influxdb.conf &gt; /dev/null
-
+           
 docker run -p 8086:8086 \
-      -v /user/pi/influxdb:/var/lib/influxdb \
-      -v /user/pi/data:/data \
-      hypriot/rpi-influxdb
-      
-docker exec -it influxdb /usr/bin/influx
-      
-docker run -p 8086:8086 \
-      --name=influxdb_backup \
-      -v /home/pi//influxdb_save:/data \
+      --name=influxdb \
+      -v /home/pi/server/influxdb:/data \
       hypriot/rpi-influxdb    
       
-docker exec -it influxdb_backup /usr/bin/influx
+docker exec -it influxdb /usr/bin/influx
 USE db_ha
 precision rfc3339
 
-CREATE DATABASE db1
+CREATE DATABASE db_ha
+CREATE USER root WITH PASSWORD 'somepassword' WITH ALL PRIVILEGES
+GRANT ALL PRIVILEGES ON db_ha TO root
+
+SHOW USERS 
 SHOW DATABASES
 SHOW SERIES
 SHOW MEASUREMENTS
@@ -30,9 +24,9 @@ SHOW FIELD KEYS
 
 
 
-  > CREATE USER root WITH PASSWORD 'somepassword' WITH ALL PRIVILEGES
-  > GRANT ALL PRIVILEGES ON db1 TO root
-  > SHOW USERS  
+  > 
+  > 
+  >  
 
   
 SELECT time,entity_id,state_class_str,value FROM "hPa" WHERE entity_id='lumi_lumi_weather_831f4b05_pressure' AND time < '2021-11-13T14:19:44.50Z'
@@ -101,21 +95,5 @@ influxd restore -portable /chemin/vers/influxdb.backup
 
 
 
-# grafana
-admin/admin
 
-# clone github repository
-git clone https://github.com/heziegl/rpi-grafana.git
-# run build script
-./run.sh
--u $(id -u)
-
-docker run -d -p 3000:3000 --name=grafana -v /home/pi/grafana:/var/lib/grafana heziegl/rpi-grafana:3.1.1
-
-VERSION=3.1.1
-
-sudo docker run -t -d --name=grafana \
-                -p 3000:3000 \
-                -v $(pwd)/etc_grafana:/etc/grafana \
-                -v $(pwd)/grafana_data:/data \
 

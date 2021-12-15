@@ -1,0 +1,73 @@
+Install wiringPi :
+cd /tmp
+wget https://project-downloads.drogon.net/wiringpi-latest.deb
+sudo dpkg -i wiringpi-latest.deb
+
+Vous devez rajouter dans le fichier /boot/config.txt les deux lignes suivantes :
+dtoverlay=pi3-disable-bt
+enable_uart=1
+
+sudo docker run --init --name=ha1 --restart=unless-stopped --device /dev/serial0:/dev/serial0 -e TZ=Europe/Paris -v /home/pi/server/ha:/config --net=host --privileged ghcr.io/home-assistant/raspberrypi4-homeassistant:stable
+
+#influxdb
+sudo docker run -p 8086:8086 \
+      --name=influxdb \
+      -v /home/pi/server/influxdb:/data \
+      hypriot/rpi-influxdb    
+      
+docker exec -it influxdb /usr/bin/influx
+USE db_ha
+precision rfc3339
+select * from temperature where entity_id='casaia_cths317et_b62ed1fe_temperature' and time > now() - 1h
+
+
+CREATE DATABASE db_ha
+CREATE USER root WITH PASSWORD 'root' WITH ALL PRIVILEGES
+GRANT ALL PRIVILEGES ON db_ha TO root
+
+SHOW USERS 
+SHOW DATABASES
+SHOW SERIES
+SHOW MEASUREMENTS
+SHOW TAG KEYS
+SHOW FIELD KEYS
+      
+      
+#Enable forwarding from Docker containers to the outside world
+#Configure the Linux kernel to allow IP forwarding.
+ sysctl net.ipv4.conf.all.forwarding=1
+#Change the policy for the iptables FORWARD policy from DROP to ACCEPT.
+ sudo iptables -P FORWARD ACCEPT
+      
+# grafana
+admin/D...+
+git clone https://github.com/heziegl/rpi-grafana.git
+# run build script
+./run.sh
+
+docker run -d --name=grafana \
+    -p 3000:3000\
+    --restart=unless-stopped \
+    -v /home/pi/server/grafana/etc:/etc/grafana \
+    -v /home/pi/server/grafana/data:/data \
+    heziegl/rpi-grafana:3.1.1
+    
+#    --net=host \
+# /etc/grafana :config files
+# /data : sqllite3 db
+#    -e "GF_AUTH_DISABLE_LOGIN_FORM=true" \
+#    -e "GF_AUTH_ANONYMOUS_ENABLED=true" \
+#    -e "GF_AUTH_ANONYMOUS_ORG_ROLE=Admin" \
+
+docker exec -it grafana /bin/bash
+
+#show http messages
+sudo httpflow -i wlan0 
+
+#show open ports
+sudo lsof -i -P -n | grep LISTEN
+
+#show ip ta ble
+sudo iptables -L
+
+

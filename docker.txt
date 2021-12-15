@@ -49,14 +49,14 @@ docker run --name gv-nginx -v /usr/share/nginx/html:/usr/share/nginx/html:ro -it
 https://github.com/gviclin/cfg.git
 
 
-sudo docker run --init --name=ha1 --device /dev/serial0:/dev/serial0 -e TZ=Europe/Paris -v /dev:/dev -v /home/pi/ha:/config --net=host --privileged ghcr.io/home-assistant/raspberrypi4-homeassistant:stable
+sudo docker run --init --name=ha1 --device /dev/serial0:/dev/serial0 -e TZ=Europe/Paris -v /dev:/dev -v /home/pi/server/ha:/config --net=host --privileged ghcr.io/home-assistant/raspberrypi4-homeassistant:stable
+sudo docker run --init --name=ha1 --restart=unless-stopped --device /dev/serial0:/dev/serial0 -e TZ=Europe/Paris -v /home/pi/server/ha:/config --net=host --privileged ghcr.io/home-assistant/raspberrypi4-homeassistant:stable
 
 # delete unused image
 docker image prune
 
 docker container inspect container_id
 
-                heziegl/rpi-grafana:$VERSION
 
 
 
