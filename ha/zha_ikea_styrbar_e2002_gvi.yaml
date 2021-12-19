@@ -1,0 +1,92 @@
+blueprint:
+  name: ZHA IKEA Styrbar E2002 - 4 Button Remotes
+  description: This automation simulates the use of the IKEA TRADFRI remote control
+    connected through ZHA.
+  domain: automation
+  input:
+    remote:
+      name: IKEA TRADFRI remote control
+      description: Select the remote control you wish to use.
+      selector:
+        device:
+          integration: zha
+          manufacturer: IKEA of Sweden
+          model: Remote Control N2
+    on1:
+      name: Short Press - On Button
+      description: The action to perform on Short Press of the On Button
+      selector:
+        action: {}
+      default: []
+    off1:
+      name: Short Press - Off Button
+      description: The action to perform on Short Press of the Off Button
+      selector:
+        action: {}
+      default: []
+    right:
+      name: Short Press - Right Button
+      description: The action to perform on Short Press of the Right Button
+      selector:
+        action: {}
+      default: []
+    left:
+      name: Short Press - Left Button
+      description: The action to perform on Short Press of the Left Button
+      selector:
+        action: {}
+      default: []
+    colorup_long:
+      name: Long Press - Color Up Button
+      description: The action to perform on Long Press of the Color Up Button
+      selector:
+        action: {}
+      default: []
+    colordown_long:
+      name: Long Press - Color Down Button
+      description: The action to perform on Long Press of the Color Down Button
+      selector:
+        action: {}
+      default: []
+mode: restart
+max_exceeded: silent
+trigger:
+- platform: event
+  event_type: zha_event
+  event_data:
+    device_id: !input 'remote'
+action:
+- choose:
+  - conditions:
+    - condition: template
+      value_template: '{{ trigger.event.data.command == "on" }}'
+    sequence: !input 'on1'
+  - conditions:
+    - condition: template
+      value_template: '{{ trigger.event.data.command == "off" }}'
+    sequence: !input 'off1'
+  - conditions:
+    - condition: template
+      value_template: '{{ trigger.event.data.command == "press" }}'
+    - condition: template
+      value_template: '{{ trigger.event.data.args == [256,13,0] }}'
+    sequence: !input 'right'
+  - conditions:
+    - condition: template
+      value_template: '{{ trigger.event.data.command == "press" }}'
+    - condition: template
+      value_template: '{{ trigger.event.data.args == [257,13,0] }}'
+    sequence: !input 'left'
+  - conditions:
+    - condition: template
+      value_template: '{{ trigger.event.data.command == "hold" }}'
+    - condition: template
+      value_template: '{{ trigger.event.data.args == [3328,0] }}'
+    sequence: !input 'colorup_long'
+  - conditions:
+    - condition: template
+      value_template: '{{ trigger.event.data.command == "hold" }}'
+    - condition: template
+      value_template: '{{ trigger.event.data.args == [3329,0] }}'
+    sequence: !input 'colordown_long'
+  default: []

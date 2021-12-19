@@ -1,0 +1,36 @@
+declencher_lumiere_allee:
+  alias: Déclencher lumière allée
+  sequence:
+  - condition: or
+    conditions:
+    - condition: sun
+      before: sunrise
+      before_offset: '+1:00:00'
+    - condition: sun
+      after: sunset
+      after_offset: '-1:00:00'
+  - repeat:
+      count: '2'
+      sequence:
+      - type: turn_on
+        device_id: 556e85cd050af899f20cf4e1676e3610
+        entity_id: light.sonoff_s26r2zb_d606c124_on_off
+        domain: light
+      - wait_template: ''
+        timeout: 00:00:02
+  - wait_template: ''
+    timeout: 00:02:00
+  - repeat:
+      count: '2'
+      sequence:
+      - type: turn_off
+        device_id: 556e85cd050af899f20cf4e1676e3610
+        entity_id: light.sonoff_s26r2zb_d606c124_on_off
+        domain: light
+      - wait_template: ''
+        timeout: 00:00:02
+      - type: turn_off
+        device_id: 556e85cd050af899f20cf4e1676e3610
+        entity_id: light.sonoff_s26r2zb_d606c124_on_off
+        domain: light
+  mode: restart

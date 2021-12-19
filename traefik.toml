@@ -1,0 +1,27 @@
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+  [entryPoints.https]
+  address = ":443"
+
+[api]
+  dashboard = true
+  
+[providers.docker]
+  endpoint = "unix:///var/run/docker.sock"
+  # On désactive l'accès au container Docker autrement que via Traefik
+  exposedByDefault=false
+  watch=true
+#  network = "web1"
+  
+[certificatesResolvers.gviclin.acme]
+  email = "gviclin@gmail.com"
+  storage = "acme.json"
+  [certificatesResolvers.gviclin.acme.httpChallenge]
+    entryPoint = "http"
+  
+[log]
+  level="INFO"
+  format="common"
+  filePath = "/srv/docker/traefik/logs/traefik.log"
+

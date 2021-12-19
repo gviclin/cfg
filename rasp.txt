@@ -71,3 +71,8 @@ sudo lsof -i -P -n | grep LISTEN
 sudo iptables -L
 
 
+#Traeffic
+docker-compose up -d
+
+
+

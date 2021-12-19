@@ -1,0 +1,61 @@
+- id: '1639216640219'
+  alias: Alumer sapin
+  description: ''
+  trigger:
+  - device_id: b93a5a4e9c4c50fc108915bf05cf8606
+    domain: zha
+    platform: device
+    type: remote_button_short_press
+    subtype: remote_button_short_press
+  condition: []
+  action:
+  - type: toggle
+    device_id: b86c76ea13dfc4c5043c7e5deb4d3cce
+    entity_id: light.sonoff_s26r2zb_4b7bc224_on_off
+    domain: light
+  mode: single
+- id: '1639240537952'
+  alias: ZHA IKEA Styrbar E2002 - 4 Button Remotes
+  description: ''
+  use_blueprint:
+    path: zha_ikea_styrbar_e2002_gvi.yaml
+    input:
+      on1:
+      - device_id: 926787db016038635b1d55f1eb769157
+        domain: light
+        entity_id: light.ikea_of_sweden_tradfri_driver_30w_f3d9a0fe_level_on_off
+        type: brightness_increase
+      off1:
+      - device_id: 926787db016038635b1d55f1eb769157
+        domain: light
+        entity_id: light.ikea_of_sweden_tradfri_driver_30w_f3d9a0fe_level_on_off
+        type: brightness_decrease
+      right:
+      - type: toggle
+        device_id: 926787db016038635b1d55f1eb769157
+        entity_id: light.ikea_of_sweden_tradfri_driver_30w_f3d9a0fe_level_on_off
+        domain: light
+      remote: 40fe56a01d885d0635577ad71dfddc10
+      left:
+      - type: toggle
+        device_id: b86c76ea13dfc4c5043c7e5deb4d3cce
+        entity_id: light.sonoff_s26r2zb_4b7bc224_on_off
+        domain: light
+- id: '1639342551999'
+  alias: Allée
+  description: ''
+  trigger:
+  - type: opened
+    platform: device
+    device_id: d4078163264e4428db3d02472be21da9
+    entity_id: binary_sensor.lumi_lumi_sensor_magnet_aq2_81e3a102_on_off
+    domain: binary_sensor
+  - type: not_opened
+    platform: device
+    device_id: d4078163264e4428db3d02472be21da9
+    entity_id: binary_sensor.lumi_lumi_sensor_magnet_aq2_81e3a102_on_off
+    domain: binary_sensor
+  condition: []
+  action:
+  - service: script.declencher_lumiere_allee
+  mode: single

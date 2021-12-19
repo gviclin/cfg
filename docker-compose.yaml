@@ -1,0 +1,79 @@
+version: '3.3'
+
+services:
+  traefik:
+    restart: always
+    image: traefik:v2.5.5
+    ports:
+    - "443:443"
+    - "80:80"
+    volumes:
+    - /home/pi/server/traefik/traefik.toml:/etc/traefik/traefik.toml
+    - /home/pi/server/traefik/acme.json:/acme.json
+    - /home/pi/server/traefik/logs:/srv/docker/traefik/logs
+    - /var/run/docker.sock:/var/run/docker.sock
+#    networks:
+#    - web1
+    labels:
+    # Explicitly tell Traefik to expose this container    
+    - "traefik.enable=true"
+    - "traefik.http.routers.api.rule=Host(`traefik.mypersonalstats.duckdns.org`)"
+    - "traefik.http.routers.api.service=api@internal"
+    - "traefik.http.routers.api.entrypoints=https"
+    - "traefik.http.routers.api.middlewares=auth"
+    - "traefik.http.middlewares.auth.basicauth.users=gviclin:$$apr1$$u/cFSSRw$$lvn14TRvKCJx886eC01uz."
+    - "traefik.http.routers.api.tls=true"
+    - "traefik.http.routers.api.tls.certresolver=gviclin"
+
+  influxdb:
+    restart: always
+    image: hypriot/rpi-influxdb
+    ports:
+    - "8087:8086"
+    volumes:
+    - /home/pi/server/influxdb1:/data 
+
+  grafana:
+    restart: always
+    image:     heziegl/rpi-grafana:3.1.1
+    depends_on:
+    - influxdb
+    - ha
+    volumes:
+    - /home/pi/server/grafana2/etc:/etc/grafana
+    - /home/pi/server/grafana2/data:/data 
+    labels:
+    - "traefik.enable=true"
+    - "traefik.http.routers.grafana.rule=Host(`grafana.mypersonalstats.duckdns.org`)"
+    - "traefik.http.routers.grafana.entrypoints=https"
+    - "traefik.http.routers.grafana.tls=true"
+    - "traefik.http.routers.grafana.tls.certresolver=gviclin"
+    - "traefik.http.services.grafana.loadbalancer.server.port=3000"
+    
+  ha:
+    restart: always
+    image: ghcr.io/home-assistant/raspberrypi4-homeassistant:stable
+    depends_on:
+    - influxdb
+    environment:
+    - TZ=Europe/Paris
+    volumes:
+    - /home/pi/server/ha1:/config
+    devices:
+    - "/dev/serial0:/dev/serial0"
+    privileged: true
+    labels:
+    - "traefik.enable=true"
+    - "traefik.http.routers.home.rule=Host(`homeassistant.mypersonalstats.duckdns.org`)"
+    - "traefik.http.routers.home.entrypoints=https"
+    - "traefik.http.routers.home.tls=true"
+    - "traefik.http.routers.home.tls.certresolver=gviclin"
+    - "traefik.http.services.home.loadbalancer.server.port=8123"
+
+        
+#networks:
+# web1:
+#   external: true
+
+
+

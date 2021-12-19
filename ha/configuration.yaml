@@ -1,0 +1,89 @@
+
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+# Example configuration.yaml entry
+http:
+#  server_port: 12345
+#  ssl_certificate: /etc/letsencrypt/live/hass.example.com/fullchain.pem
+#  ssl_key: /etc/letsencrypt/live/hass.example.com/privkey.pem
+#  cors_allowed_origins:
+#    - https://google.com
+#    - https://www.home-assistant.io
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 172.19.0.0/24
+    - 172.30.33.0/24
+  ip_ban_enabled: true
+  login_attempts_threshold: 5
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+recorder:
+  purge_keep_days: 7
+ 
+influxdb:
+  host: 172.19.0.3
+  port: 8086
+  database: db_ha
+  username: root
+  password: root
+  ssl: false
+  verify_ssl: true
+  max_retries: 3
+  measurement_attr: entity_id
+#  default_measurement: state
+#  exclude:
+#    entities:
+#       - sun.sun
+#    domains:
+#       - sun
+  include:
+    entities:   
+       - binary_sensor.lumi_lumi_sensor_magnet_aq2_81e3a102_on_off
+       - sensor.lumi_lumi_weather_831f4b05_temperature
+       - sensor.lumi_lumi_weather_831f4b05_humidity
+       - sensor.lumi_lumi_weather_831f4b05_pressure
+       - sensor.lumi_lumi_weather_b8f6bb07_temperature
+       - sensor.lumi_lumi_weather_b8f6bb07_humidity
+       - sensor.lumi_lumi_weather_b8f6bb07_pressure
+       - sensor.lumi_lumi_weather_34deb607_temperature
+       - sensor.lumi_lumi_weather_34deb607_humidity
+       - sensor.lumi_lumi_weather_34deb607_pressure
+       - sensor.casaia_cths317et_b62ed1fe_temperature
+  component_config_glob:
+    sensor.*humidity:
+      override_measurement: humidity
+    sensor.*temperature:
+      override_measurement: temperature
+    sensor.*pressure:
+      override_measurement: pressure
+    binary_sensor.*_on_off:
+      override_measurement: on_off
+  tags:
+    instance: prod
+    source: hass    
+  
+logger:
+  default: warning
+#  logs:
+#    homeassistant.core: debug
+#    homeassistant.components.zha: debug
+ #   zigpy: debug
+ #   zigpy_zigate: debug
+ #   zigpy_znp: debug
+
+  
+#google_assistant:
+#  project_id: gvi-home
+ # service_account: !include gvi-home-0f8aee5562e1.json
+#  report_state: true
+#  exposed_domains:
+#    - script
