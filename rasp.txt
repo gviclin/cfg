@@ -9,6 +9,8 @@ enable_uart=1
 
 sudo docker run --init --name=ha1 --restart=unless-stopped --device /dev/serial0:/dev/serial0 -e TZ=Europe/Paris -v /home/pi/server/ha:/config --net=host --privileged ghcr.io/home-assistant/raspberrypi4-homeassistant:stable
 
+docker exec -it server_ha_1 /bin/bash
+
 #influxdb
 sudo docker run -p 8086:8086 \
       --name=influxdb \
@@ -19,7 +21,7 @@ docker exec -it influxdb /usr/bin/influx
 USE db_ha
 precision rfc3339
 select * from temperature where entity_id='casaia_cths317et_b62ed1fe_temperature' and time > now() - 1h
-
+select time, entity_id, value from temperature where time > now() - 1h
 
 CREATE DATABASE db_ha
 CREATE USER root WITH PASSWORD 'root' WITH ALL PRIVILEGES
@@ -70,9 +72,28 @@ sudo lsof -i -P -n | grep LISTEN
 #show ip ta ble
 sudo iptables -L
 
+#change dir owner
+sudo chown -R pi postgres_data/
+
+#docker-compose
+docker-compose up -d --build
 
 #Traeffic
 docker-compose up -d
 
+#postgreSQL
+docker exec -it django_db_1 psql -U django_traefik -d django_traefik
+#select db
+\c django_traefik 
+#show table
+\dt+
+#show db
+\l
+SELECT * FROM "stravaApp_user";
 
+#cam
+#fhd:
+ffplay 'rtsp://t7NiHlqS:G6yJcH7e39aUD7mi@192.168.1.85:554/live/ch0'  
+ffplay 'rtsp://t7NiHlqS:G6yJcH7e39aUD7mi@192.168.1.85:554/live/ch1'  
+vlc 'rtsp://t7NiHlqS:G6yJcH7e39aUD7mi@192.168.1.85:554/live/ch0'  
 
