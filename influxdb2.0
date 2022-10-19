@@ -7,6 +7,19 @@ docker run -d --name=influxdb2 \
       influxdb:latest
       
      
+curl --request POST \
+  http://localhost:8086/api/v2/query?org=gvi  \
+  --header 'Authorization: Token OXuwziMkyMoDVFbOgZceTYAgl3b60VC-RgLMDFRGZcsGqUdW9n7aWfpU8Gk1x35r0G-gEfdkiSKO8y4r7K9pZg==' \
+  --header 'Accept: application/csv' \
+  --header 'Content-type: application/vnd.flux' \
+  --data 'from(bucket: "db1")
+    |> range(start: -12mo)
+    |> filter(fn: (r) => r["_measurement"] == "enedis")
+    |> filter(fn: (r) => r["Type de releve"] == "Arrêté quotidien")
+    |> filter(fn: (r) => r["_field"] == "kw" )
+    |> aggregateWindow(every: 1mo, fn: sum, createEmpty: false)
+    |> yield()'
+     
 
 from(bucket: "db1")
   |> range(start: -3mo)
