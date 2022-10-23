@@ -33,6 +33,15 @@ from(bucket: "db1")
   |> window(every: inf)
   |> yield()
   
+  from(bucket: "db1")
+  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
+  |> filter(fn: (r) => r["_measurement"] == "enedis2")
+  |> filter(fn: (r) => r["Type de releve"] == "Arrêté quotidien")
+  |> filter(fn: (r) => r["_field"] == "index")
+//  |> aggregateWindow(every: v.windowPeriod, fn: mean, createEmpty: false)
+ // |> yield(name: "mean")
+   |> yield()
+  
   
 docker exec influxdb influx write -b example-bucket \
   -t=-YdcA_QYuQmbDgQeiNhhlny9MDcXbZ9W0hGSlOTrKWjVpLSLUytaPA_CIxBSzvhcrgkJWGHwkfp32XqpnzAcqQ== \
