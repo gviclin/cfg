@@ -23,6 +23,8 @@ SHOW TAG KEYS
 SHOW FIELD KEYS
 
 
+// csv export 
+docker exec -it influxdb /usr/bin/influx -database 'db_ha1' -execute 'SELECT time,entity_id,state_class_str,value FROM "temperature"  WHERE time > now() - 24h' -format csv > temp.csv
 
   > 
   > 
@@ -76,7 +78,7 @@ DELETE FROM "weather.maison"
 DELETE FROM "h2o_quality" WHERE "randtag" = '3'
 
 SELECT time,entity_id,state_class_str,value FROM "pressure"
-SELECT time,entity_id,state_class_str,value FROM "temperature" 
+SELECT time,entity_id,state_class_str,value FROM "temperature"  WHERE time > now() - 24h;
 SELECT time,entity_id,state,value FROM "humidity" 
 
 SELECT * INTO temperature_save FROM temperature_save_2 GROUP BY *
