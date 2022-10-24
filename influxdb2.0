@@ -20,6 +20,14 @@ curl --request POST \
     |> aggregateWindow(every: 1mo, fn: sum, createEmpty: false)
     |> yield()'
      
+from(bucket: "db1")
+  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
+  |> filter(fn: (r) => r["_measurement"] == "temperature")
+  |> filter(fn: (r) => r["entity_id"] == "lumi_lumi_weather_b8f6bb07_temperature") // temperature exterieure nord
+//|> filter(fn: (r) => r["entity_id"] == "lumi_lumi_weather_b8f6bb07_temperature" or r["entity_id"] == "lumi_lumi_weather_831f4b05_temperature" or r["entity_id"] == "lumi_lumi_weather_34deb607_temperature")
+  |> filter(fn: (r) => r["_field"] == "value" )
+  |> aggregateWindow(every: 1d, fn: mean, createEmpty: false)
+  |> yield()  
 
 from(bucket: "db1")
   |> range(start: -3mo)
