@@ -24,8 +24,7 @@ SHOW FIELD KEYS
 
 
 // csv export 
-docker exec -it influxdb /usr/bin/influx -database 'db_ha1' -execute 'SELECT time,entity_id,state_class_str,value FROM "temperature"  WHERE time > now() - 24h' -format csv > temp.csv
-
+ ( docker exec -it server_influxdb_1 /usr/bin/influx -database 'db_ha' -execute 'SELECT time,entity_id,state_class_str,value FROM "temperature"' -format csv ) > temperature.csv
   > 
   > 
   >  
