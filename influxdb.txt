@@ -24,7 +24,7 @@ SHOW FIELD KEYS
 
 
 // csv export 
- ( docker exec -it server_influxdb_1 /usr/bin/influx -database 'db_ha' -execute 'SELECT time,entity_id,state_class_str,value FROM "temperature"' -format csv ) > temperature.csv
+ ( docker exec -it server_influxdb_1 /usr/bin/influx -database 'db_ha' -precision rfc3339 -execute 'SELECT time,entity_id,state_class_str,value FROM "temperature"' -format csv ) > temperature.csv
   > 
   > 
   >  
