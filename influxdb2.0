@@ -6,6 +6,16 @@ docker run -d --name=influxdb2 \
   -v  /home/gv/python/influxdb/import:/etc/influxdb2/import \
       influxdb:latest
       
+ from(bucket: "db1")
+  |> range(start: -15y)
+  |> filter(fn: (r) => r["_measurement"] == "essence_test3")
+   |> filter(fn: (r) => r["Voiture"] == "5008")
+ //|> filter(fn: (r) => r["Lieu"] != "5008") 
+ //|> group(columns: ["Lieu"])
+
+  |>  yield()
+
+      
      
 curl --request POST \
   http://localhost:8086/api/v2/query?org=gvi  \
@@ -58,13 +68,7 @@ docker exec influxdb influx write -b example-bucket \
   -o gvi \
   -f /etc/influxdb2/import/Enedis_Conso_Jour_header.csv \
   -f /etc/influxdb2/import/Enedis_Conso_Jour.csv
-  
-  docker exec influxdb influx write -b example-bucket \
-  -t=-YdcA_QYuQmbDgQeiNhhlny9MDcXbZ9W0hGSlOTrKWjVpLSLUytaPA_CIxBSzvhcrgkJWGHwkfp32XqpnzAcqQ== \
-  -b db1 \
-  -o gvi \
-  -f /etc/influxdb2/import/temperature_header.csv \
-  -f /etc/influxdb2/import/temperature.csv
+
   
  docker exec influxdb influx write -b example-bucket \
   -t=-YdcA_QYuQmbDgQeiNhhlny9MDcXbZ9W0hGSlOTrKWjVpLSLUytaPA_CIxBSzvhcrgkJWGHwkfp32XqpnzAcqQ== \
