@@ -66,5 +66,12 @@ docker exec influxdb influx write -b example-bucket \
   -f /etc/influxdb2/import/temperature_header.csv \
   -f /etc/influxdb2/import/temperature.csv
   
+ docker exec influxdb influx write -b example-bucket \
+  -t=-YdcA_QYuQmbDgQeiNhhlny9MDcXbZ9W0hGSlOTrKWjVpLSLUytaPA_CIxBSzvhcrgkJWGHwkfp32XqpnzAcqQ== \
+  -b db1 \
+  -o gvi \
+  -f /etc/influxdb2/import/essence_header.csv \
+  -f /etc/influxdb2/import/essence.csv
+  
   
 influx -type=flux -path-prefix=/api/v2/query
