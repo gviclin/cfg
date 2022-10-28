@@ -7,13 +7,6 @@ docker run -d --name=influxdb2 \
       influxdb:latest
       
       
-docker exec influxdb influx write -b example-bucket \
-  -t=-YdcA_QYuQmbDgQeiNhhlny9MDcXbZ9W0hGSlOTrKWjVpLSLUytaPA_CIxBSzvhcrgkJWGHwkfp32XqpnzAcqQ== \
-  -b db1 \
-  -o gvi \
-  -f /etc/influxdb2/import/Enedis_Conso_Jour_header.csv \
-  -f /etc/influxdb2/import/Enedis_Conso_Jour.csv7
-  
   
  docker exec influxdb influx delete \
   -t=-YdcA_QYuQmbDgQeiNhhlny9MDcXbZ9W0hGSlOTrKWjVpLSLUytaPA_CIxBSzvhcrgkJWGHwkfp32XqpnzAcqQ== \
@@ -21,7 +14,7 @@ docker exec influxdb influx write -b example-bucket \
   -o gvi \
   --start 1970-01-01T00:00:00Z \
   --stop $(date +"%Y-%m-%dT%H:%M:%SZ") \
-  --predicate '_measurement="essence_test"'
+  --predicate '_measurement="essence"'
       
  from(bucket: "db1")
   |> range(start: -15y)
