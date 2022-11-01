@@ -6,7 +6,22 @@ docker run -d --name=influxdb2 \
   -v  /home/gv/python/influxdb/import:/etc/influxdb2/import \
       influxdb:latest
       
-      
+       from(bucket: "db1")
+  |> range(start: -3mo,stop:now())
+  |> filter(fn: (r) => r["_measurement"] == "essence")
+  |> filter(fn: (r) => r["_field"] == "Distance totale")
+  |> toFloat()
+  |> group(columns: ["_measurement","_field"])
+  |> sort(columns: ["_time"],desc:false)
+  |> keep(columns: ["_field","_value","_time"])
+  |> interpolate.linear(every: 1mo)
+  |> keep(columns: ["_field","_value","_time"])
+ // |> map(fn: (r) => ({r with exampleCol: time(v: r.exampleCol)}))
+ |> map( fn: (r) => ({_time:r._time,_time2: date.truncate(t:r._time, unit: 1mo), _field:r._field, _value:r._value}))
+ //    |> aggregateWindow(every: 1mo, fn: min, createEmpty: false)
+ //  |> difference()
+ // |>  timeShift(duration:-2mo) 
+  |> yield(name: "interpolate")
   
  docker exec influxdb influx delete \
   -t=-YdcA_QYuQmbDgQeiNhhlny9MDcXbZ9W0hGSlOTrKWjVpLSLUytaPA_CIxBSzvhcrgkJWGHwkfp32XqpnzAcqQ== \
