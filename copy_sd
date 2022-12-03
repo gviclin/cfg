@@ -1,0 +1,6 @@
+sudo parted
+
+sudo fdisk -l
+lsblk
+sudo unmount /dev/sdc
+sudo dd if=/dev/sdc of=~/sdcard-copy.img
