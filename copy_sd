@@ -2,5 +2,7 @@ sudo parted
 
 sudo fdisk -l
 lsblk
-sudo unmount /dev/sdc
-sudo dd if=/dev/sdc of=~/sdcard-copy.img
+sudo umount /dev/mmcblk0
+sudo dd if=/dev/mmcblk0 of=~/sd-card-copy.img bs=1M status=progress
+
+ sudo dd if=~/sd-card-copy.img of=/dev/mmcblk0 bs=1M status=progress
