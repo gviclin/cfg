@@ -7,3 +7,10 @@ sudo umount /dev/mmcblk0
 sudo dd if=/dev/mmcblk0 of=~/sd-card-copy.img bs=1M status=progress
 
  sudo dd if=~/sd-card-copy.img of=/dev/mmcblk0 bs=1M status=progress
+ 
+ #redimensionner 
+ losetup /dev/loop0 imageCarteSD.img 
+ partprobe /dev/loop0
+ sudo gparted /dev/loop9
+sudo losetup -d /dev/loop9
+fdisk -l sd-card-copy.img
