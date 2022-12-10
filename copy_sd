@@ -14,11 +14,12 @@ sudo dd if=/dev/mmcblk0 of=~/sd-card-copy.img bs=1M status=progress
  sudo gparted /dev/loop9
 sudo losetup -d /dev/loop9
 fdisk -l sd-card-copy.img
-
+--------------------------
 vitesse disque dur
 
  hdparm -t -T /dev/sda
  
+ -----------------
  RASP :
  sd card /dev/mmcblk0 :
   Timing cached reads:   1366 MB in  2.00 seconds = 682.86 MB/sec
@@ -31,5 +32,14 @@ dd sata usb :
  dd sata usb 3.0 /dev/sdb :
  Timing cached reads:   1480 MB in  2.00 seconds = 740.33 MB/sec
  Timing buffered disk reads: 360 MB in  3.01 seconds = 119.44 MB/sec
+ 
+--------------
+PC Ubuntu :
+dev/sdb
+ Timing cached reads:   23090 MB in  1.99 seconds = 11606.35 MB/sec
+ Timing buffered disk reads: 408 MB in  3.00 seconds = 135.89 MB/sec
+/dev/sda:
+ Timing cached reads:   26190 MB in  1.99 seconds = 13168.74 MB/sec
+ Timing buffered disk reads: 428 MB in  3.01 seconds = 142.02 MB/sec
 
 
