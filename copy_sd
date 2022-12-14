@@ -41,5 +41,11 @@ dev/sdb
 /dev/sda:
  Timing cached reads:   26190 MB in  1.99 seconds = 13168.74 MB/sec
  Timing buffered disk reads: 428 MB in  3.01 seconds = 142.02 MB/sec
+ 
+ ----
+ ssd dur rasp :
+ Timing cached reads:   1354 MB in  2.00 seconds = 676.78 MB/sec
+ Timing buffered disk reads: 666 MB in  3.01 seconds = 221.60 MB/sec
+
 
 
