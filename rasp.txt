@@ -3,6 +3,9 @@ cd /tmp
 wget https://project-downloads.drogon.net/wiringpi-latest.deb
 sudo dpkg -i wiringpi-latest.deb
 
+si rasp64 : https://github.com/guation/WiringPi-arm64/releases
+
+
 Vous devez rajouter dans le fichier /boot/config.txt les deux lignes suivantes :
 dtoverlay=pi3-disable-bt
 enable_uart=1
