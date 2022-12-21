@@ -12,6 +12,10 @@ enable_uart=1
 
 test : gpio readall
 
+###################
+piZigate :
+Pour assurer le fonctionnement de la PiZigate il faut que je supprime console=serial0,115200 dans le fichier cmdline.txt.
+
 ##################
 install docker
 
