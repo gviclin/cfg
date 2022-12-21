@@ -6,15 +6,15 @@ sudo dpkg -i wiringpi-latest.deb
 
 si rasp64 : https://github.com/guation/WiringPi-arm64/releases
 
-Vous devez rajouter dans le fichier /boot/config.txt les deux lignes suivantes :
-dtoverlay=pi3-disable-bt
-enable_uart=1
-
 test : gpio readall
 
 ###################
 piZigate :
-Pour assurer le fonctionnement de la PiZigate il faut que je supprime console=serial0,115200 dans le fichier cmdline.txt.
+Pour assurer le fonctionnement de la PiZigate il faut que je supprime console=serial0,115200 dans le fichier /boot/cmdline.txt.
+
+Vous devez rajouter dans le fichier /boot/config.txt les deux lignes suivantes :
+dtoverlay=pi3-disable-bt
+enable_uart=1
 
 ##################
 install docker
