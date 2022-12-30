@@ -20,6 +20,8 @@ enable_uart=1
  https://github.com/fairecasoimeme/ZiGate
  gpio mode 0 out && gpio mode 2 out && gpio write 2 0 && gpio write 0 0 && gpio write 0 1
 ./ZiGate/Tools/JennicModuleProgrammer/Build/JennicModuleProgrammer -V 6 -P 115200 -f ZiGate_v3.1e.bin -s /dev/serial0
+./ZiGate/Tools/JennicModuleProgrammer/Build/JennicModuleProgrammer -V 6 -P 115200 -f ZiGate_v3.23-OPDM.bin -s /dev/serial0
+
 
 test :
   sudo ./test/PiZiGate_test /dev/serial0 
