@@ -25,6 +25,8 @@ enable_uart=1
 
 test :
   sudo ./test/PiZiGate_test /dev/serial0 
+  
+configure ha : pizigate:/dev/ttyS0
 
 ##################
 install docker
