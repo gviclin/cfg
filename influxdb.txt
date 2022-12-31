@@ -25,9 +25,15 @@ SHOW FIELD KEYS
 
 // csv export 
  ( docker exec -it server_influxdb_1 /usr/bin/influx -database 'db_ha' -precision rfc3339 -execute 'SELECT time,entity_id,state_class_str,value FROM "temperature"' -format csv ) > temperature.csv
-  > 
-  > 
-  >  
+
+exterieur nord : 
+SELECT mean("value") FROM "temperature" WHERE "entity_id" = 'lumi_lumi_weather_b8f6bb07_temperature' AND $timeFilter GROUP BY time($interval) fill(null)
+
+exterieur sud : 
+SELECT mean("value") FROM "temperature" WHERE ("entity_id" = 'lumi_lumi_weather_34deb607_temperature' OR "entity_id" = 'lumi_lumi_weather_temperature_2')  AND $timeFilter GROUP BY time($interval) fill(null)
+
+interieur :
+SELECT mean("value") FROM "temperature" WHERE ("entity_id" = 'lumi_lumi_weather_34deb607_temperature' OR "entity_id" = 'lumi_lumi_weather_temperature_2')  AND $timeFilter GROUP BY time($interval) fill(null)
 
   
 SELECT time,entity_id,state_class_str,value FROM "hPa" WHERE entity_id='lumi_lumi_weather_831f4b05_pressure' AND time < '2021-11-13T14:19:44.50Z'
