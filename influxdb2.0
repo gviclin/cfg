@@ -145,3 +145,5 @@ result
  |> timeShift(duration:-1y) 
  |> map(fn: (r) => ({r with _time: string(v: date.year(t:r._time))}))
 |> yield()
+
+docker exec -it server_grafana_2_1 grafana-cli admin reset-admin-password xx
