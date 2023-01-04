@@ -1,4 +1,8 @@
-  docker ps -a
+ #### DJANGO ####
+ docker run	gvi/django:1.0 
+ 
+ 
+ docker ps -a
 docker images				// list of images
 docker rmi image			// remove image
 docker rm cbd63a759dec  	// remove container
