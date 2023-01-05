@@ -1,6 +1,6 @@
  #### DJANGO ####
  docker build -t gvi/django:1.0 .
- docker run -it -v ~/docker/django:/app --name=django gvi/django:1.0 
+ docker run -it -v ~/docker/django:/app -p 8000:8000 --name=django gvi/django:1.0 
  docker exec -it django /bin/bash
 
  
