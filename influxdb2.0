@@ -1,5 +1,7 @@
 docker inspect influxdb
 
+sudo docker exec -it server_grafana_1 bash
+
 docker run -d --name=influxdb2 \
  -p 8086:8086 \
  -v  /home/gv/python/influxdb/data:/var/lib/influxdb2 \
