@@ -1,5 +1,20 @@
 //Conso quodidienne
 
+from(bucket: "db1")
+ // |> range(start: -3d)
+
+  |> range(start: 2022-10-27, stop : 2022-11-01)
+  |> filter(fn: (r) => r["_measurement"] == "enedis_jour")
+  |> filter(fn: (r) => r["Type de releve"] == "Arrêté quotidien")
+  |> filter(fn: (r) => r["_field"] == "index" )
+// |> window(every: 1d)
+ // |> aggregateWindow(every: 1d, fn: sum, createEmpty: false)
+  |> toFloat()
+ // |> difference() 
+
+  |> map(fn: (r) => ({r with _value: r._value / 1000.0}))
+  |> yield()
+
 div = (x) => x / 1000
 from(bucket: "db1")
   |> range(start: -3y)
