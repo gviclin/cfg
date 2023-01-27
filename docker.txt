@@ -3,7 +3,10 @@
  docker run -it -v ~/docker/django:/app -p 44:8000 --name=django gvi/django:1.0 
  docker exec -it django /bin/bash
 
- 
+ //Restart docker
+sudo systemctl restart docker.socket
+sudo systemctl restart docker
+
  
  docker ps -a
 docker images				// list of images
