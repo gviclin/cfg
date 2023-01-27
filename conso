@@ -1,0 +1,14 @@
+//Conso quodidienne
+
+div = (x) => x / 1000
+from(bucket: "db1")
+  |> range(start: -3y)
+  |> filter(fn: (r) => r["_measurement"] == "enedis_jour")
+  |> filter(fn: (r) => r["Type de releve"] == "Arrêté quotidien")
+  |> filter(fn: (r) => r["_field"] == "index" )
+ // |> aggregateWindow(every: 1y, fn: sum, createEmpty: false)
+  |> toFloat()
+  |> difference()
+
+  |> map(fn: (r) => ({r with _value: r._value / 1000.0}))
+  |> yield()
