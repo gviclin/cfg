@@ -1,5 +1,7 @@
 docker inspect influxdb
 
+https://www.sqlpac.com/en/documents/influxdb-v2-flux-language-quick-reference-guide-cheat-sheet.html
+
 sudo docker exec -it server_grafana_1 bash
 
 docker run -d --name=influxdb2 \
