@@ -148,4 +148,21 @@ result
  |> map(fn: (r) => ({r with _time: string(v: date.year(t:r._time))}))
 |> yield()
 
+#####  / mois 
+
+  from(bucket: "db_elec")
+  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
+  |> filter(fn: (r) => r["_measurement"] == "enedis_jour")
+  |> filter(fn: (r) => r["Type de releve"] == "Arrêté quotidien")
+  |> filter(fn: (r) => r["_field"] == "index" )
+ //|> window(every: 1mo)
+ |> aggregateWindow(every: 1mo, fn: max, createEmpty: false)
+ |>  timeShift(duration:-1d) 
+  |> toFloat()
+  |> difference() 
+  |> map(fn: (r) => ({r with _value: r._value / 1.0}))
+    |> keep(columns: ["_value","_time"])
+  |> rename(columns: {_value: "conso du mois"})
+  |> yield()
+
 docker exec -it server_grafana_2_1 grafana-cli admin reset-admin-password xx
