@@ -9,6 +9,10 @@ sudo systemctl restart docker
 
 // start with logs
 docker start server_traefik_1 -a
+
+ docker compose up -d
+ docker compose down
+
  
  docker ps -a
 docker images				// list of images
