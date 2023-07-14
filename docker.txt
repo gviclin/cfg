@@ -7,6 +7,8 @@
 sudo systemctl restart docker.socket
 sudo systemctl restart docker
 
+// start with logs
+docker start server_traefik_1 -a
  
  docker ps -a
 docker images				// list of images
