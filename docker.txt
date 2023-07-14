@@ -10,8 +10,8 @@ sudo systemctl restart docker
 // start with logs
 docker start server_traefik_1 -a
 
-docker start my_container
-docker stop my_container
+docker compose start service
+docker compose stop service
  docker compose up -d
  docker compose down
 
