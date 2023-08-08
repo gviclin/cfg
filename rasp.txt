@@ -124,7 +124,8 @@ SELECT * FROM "stravaApp_user";
 
 #cam
 #fhd:
-ffplay 'rtsp://t7NiHlqS:G6yJcH7e39aUD7mi@192.168.1.85:554/live/ch0'  
-ffplay 'rtsp://t7NiHlqS:G6yJcH7e39aUD7mi@192.168.1.85:554/live/ch1'  
+ffplay 'rtsp://t7NiHlqS:G6yJcH7e39aUD7mi@192.168.1.88:554/live/ch0'  
+ffplay 'rtsp://DY9bKwcB:q2T4s4KyVFHDeC8p@192.168.1.110:554/live/ch0'
+ffplay 'rtsp://ZeUdTR14:F9I2wAUCQYD34Oxc@192.168.1.89:554/live/ch0'
 vlc 'rtsp://t7NiHlqS:G6yJcH7e39aUD7mi@192.168.1.85:554/live/ch0'  
 
