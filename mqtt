@@ -1,2 +1,11 @@
 
 https://sequr.be/blog/2022/10/home-assistant-container-part-10-zigbee2mqtt/#zigbee2mqtt-config
+
+docker-compose up -d
+
+
+docker exec -it mosquitto mosquitto_passwd -c /mosquitto/config/mqttuser homeassistant
+
+# To see the usb device as /dev/serial/by-id doesn't exist !
+sudo dmesg -w  
+

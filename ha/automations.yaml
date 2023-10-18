@@ -1,19 +1,3 @@
-- id: '1639216640219'
-  alias: Alumer sapin
-  description: ''
-  trigger:
-  - device_id: b93a5a4e9c4c50fc108915bf05cf8606
-    domain: zha
-    platform: device
-    type: remote_button_short_press
-    subtype: remote_button_short_press
-  condition: []
-  action:
-  - type: toggle
-    device_id: b86c76ea13dfc4c5043c7e5deb4d3cce
-    entity_id: light.sonoff_s26r2zb_4b7bc224_on_off
-    domain: light
-  mode: single
 - id: '1639240537952'
   alias: ZHA IKEA Styrbar E2002 - 4 Button Remotes
   description: ''
@@ -41,21 +25,330 @@
         device_id: b86c76ea13dfc4c5043c7e5deb4d3cce
         entity_id: light.sonoff_s26r2zb_4b7bc224_on_off
         domain: light
+      colorup_long:
+      - service: script.arret_alarme
+        data: {}
+      colordown_long:
+      - service: script.arret_alarme
+        data: {}
 - id: '1639342551999'
-  alias: Allée
+  alias: Allée capteur porte garage
   description: ''
   trigger:
-  - type: opened
+  - device_id: b93a5a4e9c4c50fc108915bf05cf8606
+    domain: zha
     platform: device
-    device_id: d4078163264e4428db3d02472be21da9
-    entity_id: binary_sensor.lumi_lumi_sensor_magnet_aq2_81e3a102_on_off
-    domain: binary_sensor
-  - type: not_opened
-    platform: device
-    device_id: d4078163264e4428db3d02472be21da9
-    entity_id: binary_sensor.lumi_lumi_sensor_magnet_aq2_81e3a102_on_off
-    domain: binary_sensor
+    type: remote_button_short_press
+    subtype: remote_button_short_press
   condition: []
   action:
   - service: script.declencher_lumiere_allee
+    data: {}
+  mode: single
+- id: '1646243471982'
+  alias: Allée éteindre
+  description: ''
+  trigger:
+  - device_id: b93a5a4e9c4c50fc108915bf05cf8606
+    domain: zha
+    platform: device
+    type: remote_button_long_press
+    subtype: remote_button_long_press
+  condition: []
+  action:
+  - type: turn_off
+    device_id: 556e85cd050af899f20cf4e1676e3610
+    entity_id: light.sonoff_s26r2zb_d606c124_on_off
+    domain: light
+  - type: turn_off
+    device_id: ab21d0cc0e4ce68bbcf5b614f6e41e08
+    entity_id: light.ewelink_zb_sw02_9f0c7024_on_off
+    domain: light
+  mode: single
+- id: '1647004633625'
+  alias: bouton garage appui long
+  description: ''
+  trigger:
+  - device_id: b93a5a4e9c4c50fc108915bf05cf8606
+    domain: zha
+    platform: device
+    type: remote_button_long_release
+    subtype: remote_button_long_release
+  condition: []
+  action:
+  - type: turn_off
+    device_id: 556e85cd050af899f20cf4e1676e3610
+    entity_id: light.sonoff_s26r2zb_light
+    domain: light
+  - type: turn_off
+    device_id: ab21d0cc0e4ce68bbcf5b614f6e41e08
+    entity_id: light.ewelink_zb_sw02_forceonlight
+    domain: light
+  mode: single
+- id: '1668873290586'
+  alias: Capteur présence nord
+  description: ''
+  trigger:
+  - type: motion
+    platform: device
+    device_id: c866a459e30a0afc8f35771920fb0e61
+    entity_id: binary_sensor.lumi_lumi_motion_ac02_iaszone
+    domain: binary_sensor
+  action:
+  - service: script.declencher_lumiere_allee
+    data: {}
+  mode: single
+- id: '1668940301237'
+  alias: bouton garage appui court
+  description: ''
+  trigger:
+  - device_id: b93a5a4e9c4c50fc108915bf05cf8606
+    domain: zha
+    platform: device
+    type: remote_button_short_press
+    subtype: remote_button_short_press
+  condition: []
+  action:
+  - service: script.arret_alarme
+    data: {}
+  - device_id: a2017cad437cbc39423cbb7da2f9f183
+    domain: alarm_control_panel
+    entity_id: alarm_control_panel.alarmo
+    type: disarm
+  mode: single
+- id: '1668951045918'
+  alias: IKEA  STYRBAR Remote control
+  description: ''
+  use_blueprint:
+    path: ikea_e2001_e2002.yaml
+    input:
+      integration: ZHA
+      controller_device: 40fe56a01d885d0635577ad71dfddc10
+      action_button_left_short:
+      - type: toggle
+        device_id: a3f1fc593d062f11238318c2b4c00762
+        entity_id: switch.lumi_lumi_plug_maeu01_switch
+        domain: switch
+      action_button_right_short:
+      - type: toggle
+        device_id: 926787db016038635b1d55f1eb769157
+        entity_id: light.ikea_of_sweden_tradfri_driver_30w_light
+        domain: light
+      helper_last_controller_event: input_text.helper_last_controller_event
+      button_left_double_press: false
+      action_button_up_short:
+      - device_id: 926787db016038635b1d55f1eb769157
+        domain: light
+        entity_id: light.ikea_of_sweden_tradfri_driver_30w_light
+        type: brightness_increase
+      action_button_down_short:
+      - device_id: 926787db016038635b1d55f1eb769157
+        domain: light
+        entity_id: light.ikea_of_sweden_tradfri_driver_30w_light
+        type: brightness_decrease
+      button_up_long_loop: false
+      button_down_long_loop: false
+      helper_double_press_delay: 500
+      helper_debounce_delay: 0
+      action_button_up_long:
+      - type: toggle
+        device_id: b86c76ea13dfc4c5043c7e5deb4d3cce
+        entity_id: light.sonoff_s26r2zb_4b7bc224_on_off
+        domain: light
+      action_button_down_long:
+      - type: toggle
+        device_id: b86c76ea13dfc4c5043c7e5deb4d3cce
+        entity_id: light.sonoff_s26r2zb_4b7bc224_on_off
+        domain: light
+      button_right_long_loop: true
+      action_button_right_long:
+      - service: script.arret_alarme
+        data: {}
+      button_up_long_max_loop_repeats: 500
+      button_right_long_max_loop_repeats: 500
+- id: '1669049959924'
+  alias: alarme pending
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - alarm_control_panel.alarmo
+    to: pending
+  condition: []
+  action:
+  - service: notify.mobile_app_kb2000
+    data:
+      data:
+        importance: max
+        ttl: 0
+        priority: high
+        image: /local/nord3.jpg
+        actions:
+        - action: arret_alarme
+          title: Arrêter alarme
+      title: Alarme pending...
+      message: ' '
+  mode: single
+- id: '1670745504905'
+  alias: action_on_notif
+  description: ''
+  trigger:
+  - platform: event
+    event_type: mobile_app_kb2000_action
+    event_data:
+      action: arret_alarme
+  condition: []
+  action:
+  - service: script.arret_alarme
+    data: {}
+  mode: single
+- id: '1670766882527'
+  alias: Action sur detection capteur nord
+  description: ''
+  trigger:
+  - type: motion
+    platform: device
+    device_id: c866a459e30a0afc8f35771920fb0e61
+    entity_id: binary_sensor.lumi_lumi_motion_ac02_iaszone
+    domain: binary_sensor
+  condition:
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: alarm_control_panel.alarmo
+      attribute: arm_mode
+      state: armed_away
+    - condition: state
+      entity_id: alarm_control_panel.alarmo
+      attribute: arm_mode
+      state: armed_night
+    - condition: state
+      entity_id: alarm_control_panel.alarmo
+      attribute: arm_mode
+      state: armed_home
+  action:
+  - service: script.prendre_photo
+    data: {}
+  - service: notify.mobile_app_kb2000
+    data:
+      data:
+        importance: max
+        ttl: 0
+        priority: high
+        image: /local/screenshot/nord/last.jpg
+        actions:
+        - action: arret_alarme
+          title: Arrêter alarme
+      title: Alarme nord detection
+      message: ' '
+  mode: single
+- id: '1671183430490'
+  alias: Action sur detection interieur
+  description: ''
+  trigger:
+  - type: motion
+    platform: device
+    device_id: 6b7135e6e3b852a1dd47d646df2ffe0c
+    entity_id: binary_sensor.vanview_cuisine_motion_region_detection
+    domain: binary_sensor
+  - type: motion
+    platform: device
+    device_id: 5f657cf3b441174b8799f8c48fcc5fe2
+    entity_id: binary_sensor.ewelink_ms01_iaszone_2
+    domain: binary_sensor
+  - type: motion
+    platform: device
+    device_id: 7dd673c78a1485cb996b0d9be8f3e0c4
+    entity_id: binary_sensor.lumi_lumi_sensor_motion_aq2_iaszone
+    domain: binary_sensor
+  condition:
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: alarm_control_panel.alarmo
+      attribute: arm_mode
+      state: armed_away
+    - condition: state
+      entity_id: alarm_control_panel.alarmo
+      attribute: arm_mode
+      state: armed_night
+    - condition: state
+      entity_id: alarm_control_panel.alarmo
+      attribute: arm_mode
+      state: armed_home
+  action:
+  - service: script.prendre_photo_cuisine
+    data: {}
+  - service: notify.mobile_app_kb2000
+    data:
+      data:
+        importance: max
+        ttl: 0
+        priority: high
+        image: /local/screenshot/cuisine/last.jpg
+        actions:
+        - action: arret_alarme
+          title: Arrêter alarme
+      message: ' '
+      title: Alarme indoor detection
+  mode: single
+- id: '1675272117743'
+  alias: Capteur présence buanderie
+  description: ''
+  use_blueprint:
+    path: homeassistant/motion_light.yaml
+    input:
+      motion_entity: binary_sensor.tz1800_fcdjzz3s_ty0202_iaszone
+      light_target:
+        entity_id: light.adeo_zbek_1_light
+      no_motion_wait: 20
+- id: '1675273499587'
+  alias: Allumage lumière garage
+  description: ''
+  use_blueprint:
+    path: homeassistant/motion_light.yaml
+    input:
+      motion_entity: binary_sensor.lumi_lumi_sensor_motion_aq2_iaszone
+      light_target:
+        entity_id:
+        - light.tz3000_riwp3k79_ts0505a_light
+        - light.sonoff_01minizb_light
+      no_motion_wait: 20
+- id: '1675274563040'
+  alias: Capteur présence nord - éteindre
+  description: ''
+  trigger:
+  - type: no_motion
+    platform: device
+    device_id: c866a459e30a0afc8f35771920fb0e61
+    entity_id: binary_sensor.lumi_lumi_motion_ac02_iaszone
+    domain: binary_sensor
+  condition: []
+  action:
+  - type: turn_off
+    device_id: ab21d0cc0e4ce68bbcf5b614f6e41e08
+    entity_id: light.ewelink_zb_sw02_forceonlight
+    domain: light
+  - type: turn_off
+    device_id: 556e85cd050af899f20cf4e1676e3610
+    entity_id: light.sonoff_s26r2zb_light
+    domain: light
+  mode: single
+- id: '1690955219924'
+  alias: Couloir
+  description: '
+
+    '
+  trigger:
+  - type: motion
+    platform: device
+    device_id: 5f657cf3b441174b8799f8c48fcc5fe2
+    entity_id: binary_sensor.ewelink_ms01_iaszone_2
+    domain: binary_sensor
+    enabled: false
+  condition: []
+  action:
+  - service: notify.mobile_app_kb2000
+    data:
+      title: Home assistant test
   mode: single

@@ -1,3 +1,18 @@
+homeassistant:
+      
+  allowlist_external_dirs:
+    #- /config/cam
+    - /media
+  whitelist_external_dirs:
+    #- /config/cam
+    - /media
+    
+  media_dirs:
+    media: /config/www
+    #media: /config/cam
+    #recording: /config/cam
+    #recording: /config/cam/hd1
+    #local: /config/cam
 
 # Configure a default setup of Home Assistant (frontend, api, etc)
 default_config:
@@ -12,8 +27,7 @@ http:
 #    - https://www.home-assistant.io
   use_x_forwarded_for: true
   trusted_proxies:
-    - 172.19.0.0/24
-    - 172.30.33.0/24
+    - 172.44.0.0/24
   ip_ban_enabled: true
   login_attempts_threshold: 5
 
@@ -25,57 +39,96 @@ group: !include groups.yaml
 automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
+python_script:
+  logger:
+    default: fatal
 
 recorder:
   purge_keep_days: 7
+  
  
+    
 influxdb:
-  host: 172.19.0.3
-  port: 8086
-  database: db_ha
-  username: root
-  password: root
+  api_version: 2
   ssl: false
-  verify_ssl: true
-  max_retries: 3
+  host: 172.44.0.11
+  port: 8086
+  token: 2zhGO0LoXJYG9ngjaGyHmGzU9EOgfPFb2MZaGtlGcwKcNRZC7aKnx0PNY69sFLrPn0kRzT5YRdsGFeksquq6sQ==
+  organization: carignan
+  bucket: db_ha
+  tags_attributes:
+    - device_class
+    - friendly_name
+    - state_class
+    - unit_of_measurement
+  tags:
+    source: HA
   measurement_attr: entity_id
-#  default_measurement: state
-#  exclude:
-#    entities:
-#       - sun.sun
-#    domains:
-#       - sun
   include:
     entities:   
-       - binary_sensor.lumi_lumi_sensor_magnet_aq2_81e3a102_on_off
-       - sensor.lumi_lumi_weather_831f4b05_temperature
-       - sensor.lumi_lumi_weather_831f4b05_humidity
-       - sensor.lumi_lumi_weather_831f4b05_pressure
-       - sensor.lumi_lumi_weather_b8f6bb07_temperature
-       - sensor.lumi_lumi_weather_b8f6bb07_humidity
-       - sensor.lumi_lumi_weather_b8f6bb07_pressure
-       - sensor.lumi_lumi_weather_34deb607_temperature
-       - sensor.lumi_lumi_weather_34deb607_humidity
-       - sensor.lumi_lumi_weather_34deb607_pressure
-       - sensor.casaia_cths317et_b62ed1fe_temperature
+       - sensor.lumi_lumi_weather_temperature
+       - sensor.lumi_lumi_weather_temperature_2
+       - sensor.lumi_lumi_weather_temperature_3
+       - sensor.lumi_lumi_weather_pressure
+       - sensor.lumi_lumi_weather_pressure_2
+       - sensor.lumi_lumi_weather_pressure_3
+       - sensor.lumi_lumi_weather_humidity
+       - sensor.lumi_lumi_weather_humidity_2
+       - sensor.lumi_lumi_weather_humidity_3
+       - sensor.ewelink_th01_humidity_chambre
+       - sensor.ewelink_th01_temperature_chambre    
+       - sensor.piscine_temperature
+       - sensor.owon_ths317_et_temperature     
+
   component_config_glob:
     sensor.*humidity:
       override_measurement: humidity
+    sensor.*humidity_2:
+      override_measurement: humidity
+    sensor.*humidity_3:
+      override_measurement: humidity
+    sensor.*humidity_chambre:
+      override_measurement: humidity
     sensor.*temperature:
+      override_measurement: temperature
+    sensor.*temperature_2:
+      override_measurement: temperature
+    sensor.*temperature_3:
+      override_measurement: temperature
+    sensor.*temperature_chambre :
       override_measurement: temperature
     sensor.*pressure:
       override_measurement: pressure
-    binary_sensor.*_on_off:
-      override_measurement: on_off
-  tags:
-    instance: prod
-    source: hass    
+    sensor.*pressure_2:
+      override_measurement: pressure
+    sensor.*pressure_3:
+      override_measurement: pressure
+ 
+
+
+
   
 logger:
-  default: warning
+#   default: debug
+  default: error
+  #default: debug  
+  #default: info
 #  logs:
 #    homeassistant.core: debug
 #    homeassistant.components.zha: debug
+#    bellows.zigbee.application: debug
+#    bellows.ezsp: debug
+#    zigpy: debug
+#    zigpy_deconz.zigbee.application: debug
+#    zigpy_deconz.api: debug
+#    zigpy_xbee.zigbee.application: debug
+#    zigpy_xbee.api: debug
+#    zigpy_zigate: debug
+#    zigpy_znp: debug
+#    zhaquirks: debug
+#  logs:
+#     homeassistant.core: fatal
+#     homeassistant.components.zha: fatal
  #   zigpy: debug
  #   zigpy_zigate: debug
  #   zigpy_znp: debug
@@ -87,3 +140,42 @@ logger:
 #  report_state: true
 #  exposed_domains:
 #    - script
+
+
+device_tracker:
+  - platform: nmap_tracker
+    hosts: # mettre à la suite toutes les IP à suivre 
+    - 192.168.1.50
+#      hosts: 192.168.1.1-200# OU alors si l'on veut suivre une plage d'adresses
+    home_interval: 1 # Idem interval_seconds mais en minute pour nmap
+    exclude: # s'il y a des adresses que vous ne souhaitez pas scanner pour économiser les batteries de vos capteurs DIY par exemple.
+     - 192.168.1.12
+     - 192.168.1.13
+    interval_seconds: 60 # Le temps en secondes entre chaque scan
+    consider_home: 180 # Le temps sans résultat positif, donc considéré comme absent.
+    new_device_defaults: # ce qu'il fait s'il y a des nouveaux devices détectés
+      track_new_devices: true
+      
+#alarm_control_panel:
+  #- platform: manual
+  
+delete:
+
+input_text:
+  screenshot_dir:
+    name: Screenshot directory
+    initial: /config/www/screenshot/
+
+shell_command:
+  del_file: '/config/script/del_files.sh {{ states("input_text.screenshot_dir") }}'
+  
+panel_iframe:
+  zigbee2mqtt:
+    title: Zigbee2MQTT
+    icon: mdi:zigbee
+    url: http://172.44.0.17:8099
+    require_admin: true
+  
+
+  
+
