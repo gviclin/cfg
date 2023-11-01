@@ -207,6 +207,38 @@ services:
       - /run/udev:/run/udev:ro
     devices:
       - /dev/ttyACM0
+    labels:
+    - "traefik.enable=true"
+    - "traefik.docker.network=myhome"
+    - "traefik.http.routers.zigbee2mqtt.rule=Host(`z2mqtt.mypersonalstats.duckdns.org`)"
+    - "traefik.http.routers.zigbee2mqtt.entrypoints=https"
+    - "traefik.http.routers.zigbee2mqtt.tls=true"
+    - "traefik.http.routers.zigbee2mqtt.tls.certresolver=gviclin"
+    - "traefik.http.services.zigbee2mqtt.loadbalancer.server.port=8099"
+    
+  hass-configurator:
+    image: "causticlab/hass-configurator-docker:arm" 
+    restart: always
+    ports:
+      - "3218:3218/tcp"   
+    volumes:
+      - "./HassConfigurator:/config"
+      - "./ha:/hass-config" #Chemin absolu (relatif possible) vers le dossier de configuration de l'instance HA
+    environment:
+      - HC_BASEPATH=/hass-config #<-- Le dossier au démarrage de l'application web (arbo du container)
+      - HC_ENFORCE_BASEPATH=true #<-- Limiter la visualisation à l'arborescence (impossible de remonter plus haut que le chemin du volume pointant sur HC_BASEPATH
+      - HC_DIRSFIRST=true #<-- Afficher les dossiers en premier (plutôt que mélanger avec les fichiers par ordre alphabétique)
+    networks:
+        myhome:
+            ipv4_address: 172.44.0.18
+    labels:
+    - "traefik.enable=true"
+    - "traefik.docker.network=myhome"
+    - "traefik.http.routers.hass-configurator.rule=Host(`files.mypersonalstats.duckdns.org`)"
+    - "traefik.http.routers.hass-configurator.entrypoints=https"
+    - "traefik.http.routers.hass-configurator.tls=true"
+    - "traefik.http.routers.hass-configurator.tls.certresolver=gviclin"
+    - "traefik.http.services.hass-configurator.loadbalancer.server.port=3218"
        
 networks:
     myhome:

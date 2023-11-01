@@ -1,0 +1,28 @@
+switch:
+  name: prise_lidl
+  command_topic: "zigbee2mqtt/Prise Lidl 2023/set"
+  state_topic: "zigbee2mqtt/Prise Lidl 2023"    
+  #  availability:
+  #  - topic: "zigbee2mqtt/Prise Lidl 2023/available"
+  payload_on: "on"
+  payload_off: "off"
+  state_on: "on"
+  state_off: "off"        
+
+
+  
+light:
+  - schema: json
+    name: lumiere_terrasse
+    command_topic: "zigbee2mqtt/lumi.switch.n0agl1/set"
+    state_topic: "zigbee2mqtt/lumi.switch.n0agl1"
+    
+  - schema: json
+    name: bandeau_led_cuisine
+    command_topic: "zigbee2mqtt/Bandeau_led_ikea_TRADFRI/set"
+    state_topic: "zigbee2mqtt/Bandeau_led_ikea_TRADFRI"
+    #  availability:
+    #    - topic: "zigbee2mqtt/Bandeau Led Ikea/available"
+    brightness: true
+    color_mode: true
+    supported_color_modes: ["hs"]

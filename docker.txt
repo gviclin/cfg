@@ -75,6 +75,8 @@ docker image prune
 
 docker container inspect container_id
 
+docker-compose up -d
+
 
 
 
