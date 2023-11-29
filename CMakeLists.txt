@@ -16,3 +16,6 @@ add_executable(my_program my_program_source.cpp)
 target_link_libraries(my_program PRIVATE my_lib)
 
 target_compile_definitions
+
+You can define macros in CMake with add_definitions :
+add_definitions(-DCMAKEMACROSAMPLE="Windows PC")
