@@ -45,3 +45,14 @@ add_library(math SHARED lib/math/operations.cpp)
 #add_library(math STATIC lib/math/operations.cpp)
 add_executable(cmake_hello main.cpp)
 target_link_libraries(cmake_hello math)
+
+
+CMakeCache.txt :
+set(libAPath "/home/libA" CACHE PATH "info about libAPath for user")
+or
+cmake -D compilesModule1:BOOL=ON -S path/to/source -B path/to/build
+or
+option(hasModule1 "info about this option" ON)
+
+# Sometimes we want to store some variables on disk as a developer, but we don’t want them to be changed by the user, then we write
+set(libAPath "/home/libA" CACHE INTERNAL "some info")
