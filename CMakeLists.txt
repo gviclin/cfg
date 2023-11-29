@@ -19,3 +19,16 @@ target_compile_definitions
 
 You can define macros in CMake with add_definitions :
 add_definitions(-DCMAKEMACROSAMPLE="Windows PC")
+
+
+project(CMakeHello)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+add_executable(cmake_hello main.cpp)
+
+
+cmake -H. -Bbuild
+# H indicates source directory
+# B indicates build directory
+# For CLion, you can navigate to CLion -> Preferences -> Build, Execution and Deployment -> CMake -> Generation Path
