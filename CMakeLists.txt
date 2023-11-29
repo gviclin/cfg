@@ -56,3 +56,7 @@ option(hasModule1 "info about this option" ON)
 
 # Sometimes we want to store some variables on disk as a developer, but we don’t want them to be changed by the user, then we write
 set(libAPath "/home/libA" CACHE INTERNAL "some info")
+
+
+While CMAKE_CURRENT_SOURCE_DIR is dependent on the location of focused CMakeLists.txt, 
+PROJECT_SOURCE_DIR is always set to the top-level folder containing CMakeLists.txt which has project() command in it.
