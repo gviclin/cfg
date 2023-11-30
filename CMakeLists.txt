@@ -61,6 +61,12 @@ set(libAPath "/home/libA" CACHE INTERNAL "some info")
 While CMAKE_CURRENT_SOURCE_DIR is dependent on the location of focused CMakeLists.txt, 
 PROJECT_SOURCE_DIR is always set to the top-level folder containing CMakeLists.txt which has project() command in it.
 
+CMAKE_SOURCE_DIR, CMAKE_CURRENT_SOURCE_DIR
+CMAKE_SOURCE_DIR is where cmake was originally invoked, and CMAKE_CURRENT_SOURCE_DIR is where cmake is currently working. 
+For instance, if you use add_subdirectory command to include a dependency to your project, 
+the dependency will have its own CMAKE_CURRENT_SOURCE_DIR but CMAKE_SOURCE_DIR will remain the same.
+
+CMAKE_BINARY_DIR and CMAKE_CURRENT_BINARY_DIR 
 
 The difference between include and add_subdirectory is:
 include is used to add modules that may contain functions, macros, instruction to install packages and so forth.
