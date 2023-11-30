@@ -15,7 +15,31 @@ target_include_directories(my_lib PUBLIC some_directory)
 add_executable(my_program my_program_source.cpp)
 target_link_libraries(my_program PRIVATE my_lib)
 
+#add_custom_target : Adds a target with the given name that executes the given commands
+add_custom_target(my_custom_target
+    COMMAND
+        ${CMAKE_COMMAND} -E echo Hi this is a custom target
+    VERBATIM
+)
 
+~/build  cmake --build .
+~/build
+
+~/build  cmake --build . --target my_custom_target
+Hi this is a custom target
+Built target my_custom_target
+
+# add_custom_command : This defines a command to generate specified OUTPUT file(s)
+add_custom_target(my_custom_target
+    DEPENDS
+        "${CMAKE_CURRENT_BINARY_DIR}/generated_file"
+)
+add_custom_command(
+    OUTPUT
+        "${CMAKE_CURRENT_BINARY_DIR}/generated_file"
+    COMMAND
+        ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/generated_file
+)
 
 You can define macros in CMake with add_definitions (to ALL target)
 add_definitions(-DCMAKEMACROSAMPLE="Windows PC")
