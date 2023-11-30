@@ -117,3 +117,22 @@ CMAKE_BINARY_DIR and CMAKE_CURRENT_BINARY_DIR
 The difference between include and add_subdirectory is:
 include is used to add modules that may contain functions, macros, instruction to install packages and so forth.
 add_subdirectory is used to add folders that contain source code to be compiled.
+
+
+find_program(
+    PYTHON_EXECUTABLE
+    NAMES
+        python python3 python36
+    DOC "Python executable location"
+)
+
+if(PYTHON_EXECUTABLE)
+    message(FATAL_ERROR "It was not possible to find the Python executable")
+endif()
+
+
+find_file(
+    MY_FILE
+    NAMES
+        file.xml
+)
