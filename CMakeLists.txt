@@ -40,8 +40,10 @@ add_custom_command(
     COMMAND
         ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/generated_file
 )
+If we are generating more than one file, we have to list all of them in the OUTPUT argument for add_custom_command and in the DEPENDS argument for add_custom_target. Doing this, we will ensure that all the files will be generated. If try to build my_custom_target:
 
-You can define macros in CMake with add_definitions (to ALL target)
+
+#You can define macros in CMake with add_definitions (to ALL target)
 add_definitions(-DCMAKEMACROSAMPLE="Windows PC")
 or
 target_compile_definitions(my_app
