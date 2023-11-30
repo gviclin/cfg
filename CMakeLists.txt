@@ -34,13 +34,18 @@ add_custom_target(my_custom_target
     DEPENDS
         "${CMAKE_CURRENT_BINARY_DIR}/generated_file"
 )
+
 add_custom_command(
     OUTPUT
         "${CMAKE_CURRENT_BINARY_DIR}/generated_file"
+    COMMENT
+        "This is generating my custom command"
     COMMAND
         ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/generated_file
+    DEPENDS
+        ${CMAKE_CURRENT_SOURCE_DIR}/source_file
 )
-If we are generating more than one file, we have to list all of them in the OUTPUT argument for add_custom_command and in the DEPENDS argument for add_custom_target. Doing this, we will ensure that all the files will be generated. If try to build my_custom_target:
+#If we are generating more than one file, we have to list all of them in the OUTPUT argument for add_custom_command and in the DEPENDS argument for add_custom_target. Doing this, we will ensure that all the files will be generated. If try to build my_custom_target:
 
 
 #You can define macros in CMake with add_definitions (to ALL target)
