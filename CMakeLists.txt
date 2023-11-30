@@ -15,10 +15,14 @@ target_include_directories(my_lib PUBLIC some_directory)
 add_executable(my_program my_program_source.cpp)
 target_link_libraries(my_program PRIVATE my_lib)
 
-target_compile_definitions
 
-You can define macros in CMake with add_definitions :
+
+You can define macros in CMake with add_definitions (to ALL target)
 add_definitions(-DCMAKEMACROSAMPLE="Windows PC")
+or
+target_compile_definitions(my_app
+    PRIVATE
+        AWESOME
 
 
 project(CMakeHello)
