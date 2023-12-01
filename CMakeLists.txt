@@ -136,3 +136,148 @@ find_file(
     NAMES
         file.xml
 )
+cmake_minimum_required(VERSION 3.16)
+project(SomeProject LANGUAGES CXX)
+
+add_executable(my_program program.cpp)
+target_include_directories(my_program
+ PRIVATE
+  first_dir/
+  second_dir/)
+
+
+ 
+add_library(my_lib STATIC my_lib_source.cpp)
+target_include_directories(my_lib PUBLIC some_directory)
+
+add_executable(my_program my_program_source.cpp)
+target_link_libraries(my_program PRIVATE my_lib)
+
+#add_custom_target : Adds a target with the given name that executes the given commands
+add_custom_target(my_custom_target
+    COMMAND
+        ${CMAKE_COMMAND} -E echo Hi this is a custom target
+    VERBATIM
+)
+
+~/build  cmake --build .
+~/build
+
+~/build  cmake --build . --target my_custom_target
+Hi this is a custom target
+Built target my_custom_target
+
+# add_custom_command : This defines a command to generate specified OUTPUT file(s)
+add_custom_target(my_custom_target
+    DEPENDS
+        "${CMAKE_CURRENT_BINARY_DIR}/generated_file"
+)
+
+add_custom_command(
+    OUTPUT
+        "${CMAKE_CURRENT_BINARY_DIR}/generated_file"
+    COMMENT
+        "This is generating my custom command"
+    COMMAND
+        ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/generated_file
+    DEPENDS
+        ${CMAKE_CURRENT_SOURCE_DIR}/source_file
+)
+#If we are generating more than one file, we have to list all of them in the OUTPUT argument for add_custom_command and in the DEPENDS argument for add_custom_target. Doing this, we will ensure that all the files will be generated. If try to build my_custom_target:
+
+When is needed to use add_custom_target?
+Each time we need to run a command to do something in our build system different to build a library or an executable.
+
+When is a good idea to run a command in add_custom_target?
+When the command must be executed always the target is built.
+
+When is a good idea to use add_custom_command?
+Always we want to run the command when is needed: if we need to generate a file (or more) or regenerate it if something changed in the source folder.
+
+
+
+#You can define macros in CMake with add_definitions (to ALL target)
+add_definitions(-DCMAKEMACROSAMPLE="Windows PC")
+or
+target_compile_definitions(my_app
+    PRIVATE
+        AWESOME
+
+
+project(CMakeHello)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+add_executable(cmake_hello main.cpp)
+
+cmake -DCMAKE_BUILD_TYPE=Debug -DBUILD_SHARED_LIBS=ON ..
+
+cmake -H. -Bbuild
+# H indicates source directory
+# B indicates build directory
+# For CLion, you can navigate to CLion -> Preferences -> Build, Execution and Deployment -> CMake -> Generation Path
+
+
+cmake_minimum_required(VERSION 3.9.1)
+project(CMakeHello)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin)
+set(LIBRARY_OUTPUT_PATH  ${CMAKE_BINARY_DIR}/lib)
+message(${CMAKE_BINARY_DIR})
+add_library(math SHARED lib/math/operations.cpp)
+#add_library(math STATIC lib/math/operations.cpp)
+add_executable(cmake_hello main.cpp)
+target_link_libraries(cmake_hello math)
+
+
+CMakeCache.txt :
+set(libAPath "/home/libA" CACHE PATH "info about libAPath for user")
+or
+cmake -D compilesModule1:BOOL=ON -S path/to/source -B path/to/build
+or
+option(hasModule1 "info about this option" ON)
+
+# Sometimes we want to store some variables on disk as a developer, but we don’t want them to be changed by the user, then we write
+set(libAPath "/home/libA" CACHE INTERNAL "some info")
+
+
+While CMAKE_CURRENT_SOURCE_DIR is dependent on the location of focused CMakeLists.txt, 
+PROJECT_SOURCE_DIR is always set to the top-level folder containing CMakeLists.txt which has project() command in it.
+
+CMAKE_SOURCE_DIR, CMAKE_CURRENT_SOURCE_DIR
+CMAKE_SOURCE_DIR is where cmake was originally invoked, and CMAKE_CURRENT_SOURCE_DIR is where cmake is currently working. 
+For instance, if you use add_subdirectory command to include a dependency to your project, 
+the dependency will have its own CMAKE_CURRENT_SOURCE_DIR but CMAKE_SOURCE_DIR will remain the same.
+
+CMAKE_BINARY_DIR and CMAKE_CURRENT_BINARY_DIR 
+
+The difference between include and add_subdirectory is:
+include is used to add modules that may contain functions, macros, instruction to install packages and so forth.
+add_subdirectory is used to add folders that contain source code to be compiled.
+
+
+find_program(
+    PYTHON_EXECUTABLE
+    NAMES
+        python python3 python36
+    DOC "Python executable location"
+)
+
+if(PYTHON_EXECUTABLE)
+    message(FATAL_ERROR "It was not possible to find the Python executable")
+endif()
+
+
+find_file(
+    MY_FILE
+    NAMES
+        file.xml
+)
+
+# Show all variables
+get_cmake_property(_variableNames VARIABLES)
+list (SORT _variableNames)
+foreach (_variableName ${_variableNames})
+    message(STATUS "${_variableName}=${${_variableName}}")
+endforeach()
