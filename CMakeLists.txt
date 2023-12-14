@@ -281,3 +281,16 @@ list (SORT _variableNames)
 foreach (_variableName ${_variableNames})
     message(STATUS "${_variableName}=${${_variableName}}")
 endforeach()
+
+
+# link libraries order 
+This brings us to the most important corollary of the linking process outlined above:
+If object or library AA needs a symbol from library BB, then AA should come before library BB in the command-line invocation of the linker.
+
+to support circular dependencies i need to put "-Wl,--start-group" and "'-Wl,--end-group" around the objects to links in the linker command line.
+
+target_link_libraries(myTarget
+  PRIVATE # or any other keyword
+  mylibrary1 mylibrary2 # These libraries will be linked normally
+  "$<LINK_GROUP:RESCAN,${MY_VARIABLE_LIST_OF_LIBRARIES}>" # These libraries will be grouped
+)
