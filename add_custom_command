@@ -1,6 +1,8 @@
 add_custom_command : adds a rule to a Makefile.With Visual Studio, it adds a custom build step 
 
+https://stackoverflow.com/questions/25941536/what-is-a-cmake-generator/61651241#61651241
 https://fekir.info/post/cmake-custom-targets-and-commands/
+
 
 - first use :
 # first define the executable target as usual
