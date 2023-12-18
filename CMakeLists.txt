@@ -6,6 +6,8 @@ Building a CMake project involves three phases:
 
 cmake -E : cmake command mode
 
+
+
 cmake_minimum_required(VERSION 3.16)
 project(SomeProject LANGUAGES CXX)
 
