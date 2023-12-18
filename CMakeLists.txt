@@ -16,32 +16,11 @@ cmake -E : cmake command mode
 Hi this is a custom target
 Built target my_custom_target
 
-# add_custom_command : This defines a command to generate specified OUTPUT file(s)
-add_custom_target(my_custom_target
-    DEPENDS
-        "${CMAKE_CURRENT_BINARY_DIR}/generated_file"
-)
-
-add_custom_command(
-    OUTPUT
-        "${CMAKE_CURRENT_BINARY_DIR}/generated_file"
-    COMMENT
-        "This is generating my custom command"
-    COMMAND
-        ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/generated_file
-    DEPENDS
-        ${CMAKE_CURRENT_SOURCE_DIR}/source_file
-)
-#If we are generating more than one file, we have to list all of them in the OUTPUT argument for add_custom_command and in the DEPENDS argument for add_custom_target. Doing this, we will ensure that all the files will be generated. If try to build my_custom_target:
-
-When is needed to use add_custom_target?
-Each time we need to run a command to do something in our build system different to build a library or an executable.
-
-When is a good idea to run a command in add_custom_target?
-When the command must be executed always the target is built.
-
-When is a good idea to use add_custom_command?
-Always we want to run the command when is needed: if we need to generate a file (or more) or regenerate it if something changed in the source folder.
+add_executable(my_program program.cpp)
+target_include_directories(my_program
+ PRIVATE
+  first_dir/
+  second_dir/)
 
 
 
