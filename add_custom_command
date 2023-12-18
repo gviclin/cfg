@@ -1,0 +1,27 @@
+add_custom_command : adds a rule to a Makefile.With Visual Studio, it adds a custom build step 
+- first use :
+# first define the executable target as usual
+add_executable(Foo bar.c)
+
+# then add the custom command to copy it
+add_custom_command(
+  TARGET Foo
+  POST_BUILD
+  COMMAND ${CMAKE_COMMAND}
+  ARGS -E copy $<TARGET_FILE:Foo> /testing_department/files
+  )
+
+- second use : add a rule for how to build an output file
+# add the executable that will create the file
+# build creator executable from creator.cxx
+add_executable(creator creator.cxx)
+
+# add the custom command to produce created.c
+add_custom_command(
+  OUTPUT ${PROJECT_BINARY_DIR}/created.c
+  DEPENDS creator
+  COMMAND creator ${PROJECT_BINARY_DIR}/created.c
+  )
+
+# add an executable that uses created.c
+add_executable(Foo ${PROJECT_BINARY_DIR}/created.c)
