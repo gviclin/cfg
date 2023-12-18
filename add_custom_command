@@ -1,5 +1,7 @@
 add_custom_command : adds a rule to a Makefile.With Visual Studio, it adds a custom build step 
 
+https://fekir.info/post/cmake-custom-targets-and-commands/
+
 - first use :
 # first define the executable target as usual
 add_executable(Foo bar.c)
@@ -29,6 +31,23 @@ add_custom_command(
     DEPENDS
         ${CMAKE_CURRENT_SOURCE_DIR}/source_file
 )
+
+
+
+
+ add_custom_target : can be used whenever you want the notion of a target but without the end product being a library or an executable.
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
